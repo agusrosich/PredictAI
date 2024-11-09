@@ -74,7 +74,6 @@ python-iso639==2023.6.15
 python-magic==0.4.27
 python-multipart==0.0.6
 pytz==2023.3.post1
-pywin32==306
 PyYAML==6.0.1
 rapidfuzz==3.5.2
 regex==2023.10.3
