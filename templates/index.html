@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Positive Node Risk Prediction</title>
+</head>
+<body>
+    <h1>Positive Node Risk Prediction</h1>
+    <form action="/predict" method="POST">
+        <!-- Age -->
+        <label for="age">Age:</label>
+        <input type="number" name="age" required><br><br>
+
+        <!-- Tumor Stage (Prostate Cancer) -->
+        <label for="tumor_stage">Tumor Stage (T):</label>
+        <select name="tumor_stage" required>
+            <option value="T1a">T1a</option>
+            <option value="T1b">T1b</option>
+            <option value="T1c">T1c</option>
+            <option value="T2a">T2a</option>
+            <option value="T2b">T2b</option>
+            <option value="T2c">T2c</option>
+            <option value="T3a">T3a</option>
+            <option value="T3b">T3b</option>
+            <option value="T3c">T3c</option>
+            <option value="T4">T4</option>
+        </select><br><br>
+
+        <!-- PSA -->
+        <label for="psa">PSA:</label>
+        <input type="number" name="psa" step="0.01" required><br><br>
+
+        <!-- Gleason Score -->
+        <label for="gleason_score">Gleason Score:</label>
+        <input type="number" name="gleason_score" required><br><br>
+
+        <!-- Race -->
+        <label for="race">Race:</label>
+        <select name="race" required>
+            <option value="White">White</option>
+            <option value="Black">Black</option>
+            <option value="Asian">Asian</option>
+            <option value="Hispanic">Hispanic</option>
+            <option value="Other">Other</option>
+        </select><br><br>
+
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction_text %}
+    <h2>{{ prediction_text }}</h2>
+    {% endif %}
+</body>
+</html>
