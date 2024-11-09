@@ -1,0 +1,64 @@
+import pandas as pd
+import joblib
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+# Carga de datos
+file_path = 'C:/Users/Agus/Documents/Smart roach App/SmartRoachData.xlsx'
+data = pd.read_excel(file_path)
+
+# Renombrar columnas para facilitar el manejo
+data = data.rename(columns={
+    'Race': 'race',
+    'T': 'tumor_stage',
+    'N': 'node_stage',
+    'M': 'metastasis_stage',
+    'Gleason': 'gleason_score',
+    'PSA': 'psa',
+    'Numero de tumores in situ': 'num_tumors_in_situ',
+    'Edad': 'age',
+    'Anatomia patologica': 'pathology',
+    'Nodos regionales positivos': 'positive_nodes',
+    'Nodos examinados': 'examined_nodes'
+})
+
+# Filtrar filas sin datos relevantes
+data = data[(data['positive_nodes'] != 'No se realiza') & (data['psa'] != 'Not documented; not assessed; unknown')]
+
+# Convertir columnas relevantes a numéricas
+data['psa'] = pd.to_numeric(data['psa'], errors='coerce')
+data['positive_nodes'] = pd.to_numeric(data['positive_nodes'], errors='coerce')
+
+# Eliminar filas con valores NaN restantes
+data = data.dropna()
+
+# Seleccionar las características y la variable objetivo
+X = data[['psa', 'gleason_score', 'num_tumors_in_situ', 'age', 'examined_nodes']]
+y = data['positive_nodes']
+
+# Codificar variables categóricas
+X = pd.get_dummies(X, columns=['gleason_score', 'age'], drop_first=True)
+
+# Dividir en entrenamiento (60%) y validación (40%)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=42)
+
+# Inicializar y entrenar el modelo GBM
+gbm_model = GradientBoostingClassifier(random_state=42)
+gbm_model.fit(X_train, y_train)
+
+# Realizar predicciones
+y_pred = gbm_model.predict(X_test)
+
+# Evaluación del modelo
+accuracy = accuracy_score(y_test, y_pred)
+classification_rep = classification_report(y_test, y_pred)
+conf_matrix = confusion_matrix(y_test, y_pred)
+
+# Mostrar resultados
+print("Precisión del modelo:", accuracy)
+print("\nReporte de clasificación:\n", classification_rep)
+print("\nMatriz de confusión:\n", conf_matrix)
+
+# Guardar el modelo GBM entrenado
+joblib.dump(gbm_model, 'modelo_smart_roach_gbm.pkl')
