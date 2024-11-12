@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Roach Test</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center; /* Centrar horizontalmente */
+            align-items: center;    /* Centrar verticalmente */
+            height: 100vh;          /* Altura de la ventana */
+            margin: 0;
+            background-color: #f0f0f0; /* Fondo claro */
+            position: relative;    /* Para posicionar el texto de versión */
+        }
+        .form-container {
+            border: 2px solid black; /* Borde negro */
+            padding: 20px;
+            background-color: white;
+            width: 320px;            /* Ancho fijo */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+            position: relative;
+        }
+        h1 {
+            color: red;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        h2.subtitle {
+            font-size: 14px;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        input[type="range"] {
+            width: 100%;
+        }
+        .psa-value {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .psa-input {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 5px;
+        }
+        .psa-input label {
+            margin: 0;
+        }
+        .psa-input input[type="number"] {
+            width: 60px;
+            margin-left: 10px;
+        }
+        input[type="submit"] {
+            margin-top: 15px;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        h2.result {
+            text-align: center;
+            color: green;
+        }
+        .version {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+    <script>
+        function updatePSAValue(val) {
+            document.getElementById('psaValue').innerText = val;
+            document.getElementById('psaNumber').value = val;
+        }
+        function updatePSASlider(val) {
+            document.getElementById('psaValue').innerText = val;
+            document.getElementById('psaSlider').value = val;
+        }
+    </script>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Smart Roach Test</h1>
+        <h2 class="subtitle">Unidad Académica de Radioterapia - UDELAR - 2024</h2>
+        <form method="post">
+            <label for="edad">Edad:</label>
+            <input type="number" id="edad" name="edad" required value="{{ edad }}">
+
+            <label for="t">Estadio T:</label>
+            <select id="t" name="t" required>
+                <option value="T1a" {% if t == 'T1a' %}selected{% endif %}>T1a</option>
+                <option value="T1b" {% if t == 'T1b' %}selected{% endif %}>T1b</option>
+                <option value="T1c" {% if t == 'T1c' %}selected{% endif %}>T1c</option>
+                <option value="T2" {% if t == 'T2' %}selected{% endif %}>T2</option>
+                <option value="T2a" {% if t == 'T2a' %}selected{% endif %}>T2a</option>
+                <option value="T2b" {% if t == 'T2b' %}selected{% endif %}>T2b</option>
+                <option value="T2c" {% if t == 'T2c' %}selected{% endif %}>T2c</option>
+                <option value="T3" {% if t == 'T3' %}selected{% endif %}>T3</option>
+                <option value="T3a" {% if t == 'T3a' %}selected{% endif %}>T3a</option>
+                <option value="T3b" {% if t == 'T3b' %}selected{% endif %}>T3b</option>
+                <option value="T4" {% if t == 'T4' %}selected{% endif %}>T4</option>
+            </select>
+
+            <label for="race">Raza:</label>
+            <select id="race" name="race" required>
+                <option value="White" {% if race == 'White' %}selected{% endif %}>Blanco</option>
+                <option value="Black" {% if race == 'Black' %}selected{% endif %}>Negro</option>
+                <option value="Asian/Pacific Islander" {% if race == 'Asian/Pacific Islander' %}selected{% endif %}>Asiático/Isleño del Pacífico</option>
+                <option value="American Indian/AK Native" {% if race == 'American Indian/AK Native' %}selected{% endif %}>Indio Americano/Nativo de Alaska</option>
+                <option value="Other" {% if race == 'Other' %}selected{% endif %}>Otro</option>
+                <option value="Unknown" {% if race == 'Unknown' %}selected{% endif %}>Desconocido</option>
+            </select>
+
+            <label for="psa">PSA:</label>
+            <div class="psa-value">Valor PSA: <span id="psaValue">{{ psa or 0 }}</span> ng/mL</div>
+            <input type="range" id="psaSlider" min="0" max="100" step="0.1" value="{{ psa or 0 }}" oninput="updatePSAValue(this.value)">
+            <div class="psa-input">
+                <label for="psaNumber">Ingresar valor PSA:</label>
+                <input type="number" id="psaNumber" name="psa" min="0" max="100" step="0.1" value="{{ psa or 0 }}" oninput="updatePSASlider(this.value)">
+            </div>
+
+            <label for="gleason">Gleason:</label>
+            <select id="gleason" name="gleason" required>
+                {% for i in range(2, 11) %}
+                    <option value="{{ i }}" {% if gleason == i %}selected{% endif %}>{{ i }}</option>
+                {% endfor %}
+            </select>
+
+            <input type="submit" value="Predecir Riesgo">
+        </form>
+
+        {% if result is not none %}
+            <h2 class="result">Riesgo de Ganglios Positivos: {{ result }}%</h2>
+        {% endif %}
+
+        <div class="version">Ver 0.1 Alpha</div>
+    </div>
+</body>
+</html>
