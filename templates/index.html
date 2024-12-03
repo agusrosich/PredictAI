@@ -3,81 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <title>Smart Roach Test</title>
+    <!-- Incluir Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <style>
         body {
+            font-family: 'Poppins', sans-serif;
             display: flex;
             justify-content: center; /* Centrar horizontalmente */
             align-items: center;    /* Centrar verticalmente */
             height: 100vh;          /* Altura de la ventana */
             margin: 0;
-            background-color: #f0f0f0; /* Fondo claro */
+            background-color: #e0f7fa; /* Fondo celeste */
             position: relative;    /* Para posicionar el texto de versión */
         }
         .form-container {
-            border: 2px solid black; /* Borde negro */
-            padding: 20px;
+            border: none; /* Sin borde */
+            border-radius: 15px;    /* Bordes redondeados */
+            padding: 30px;
             background-color: white;
-            width: 320px;            /* Ancho fijo */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+            width: 350px;            /* Ancho fijo */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
             position: relative;
         }
         h1 {
-            color: red;
+            color: #007bff; /* Color azul */
             text-align: center;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
         h2.subtitle {
             font-size: 14px;
             text-align: center;
             margin-top: 0;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            color: #555;
         }
         label {
             display: block;
-            margin-top: 10px;
+            margin-top: 15px;
+            font-weight: 500;
+            color: #333;
         }
         input[type="number"],
         select {
             width: 100%;
-            padding: 5px;
+            padding: 10px;
             box-sizing: border-box;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-top: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input[type="number"]:focus,
+        select:focus {
+            border-color: #007bff;
         }
         input[type="range"] {
             width: 100%;
+            margin-top: 5px;
         }
         .psa-value {
             text-align: center;
             margin-bottom: 10px;
             font-weight: bold;
+            color: #333;
         }
         .psa-input {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 5px;
+            margin-top: 10px;
         }
         .psa-input label {
             margin: 0;
+            font-weight: normal;
+            font-size: 14px;
         }
         .psa-input input[type="number"] {
-            width: 60px;
+            width: 80px;
             margin-left: 10px;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .psa-input input[type="number"]:focus {
+            border-color: #007bff;
         }
         input[type="submit"] {
-            margin-top: 15px;
+            margin-top: 25px;
             width: 100%;
-            padding: 10px;
-            background-color: #007bff;
+            padding: 12px;
+            background-color: #007bff; /* Color azul */
             color: white;
             border: none;
             cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
         }
         input[type="submit"]:hover {
             background-color: #0056b3;
         }
         h2.result {
             text-align: center;
-            color: green;
+            color: #28a745; /* Color verde */
         }
         .version {
             position: absolute;
@@ -85,6 +118,16 @@
             right: 10px;
             font-size: 12px;
             color: #888;
+        }
+        /* Estilos para dispositivos móviles */
+        @media (max-width: 480px) {
+            .form-container {
+                width: 90%;
+                padding: 20px;
+            }
+            h1 {
+                font-size: 24px;
+            }
         }
     </style>
     <script>
@@ -153,7 +196,7 @@
             <h2 class="result">Riesgo de Ganglios Positivos: {{ result }}%</h2>
         {% endif %}
 
-        <div class="version">Ver 0.1 Alpha</div>
+        <div class="version">Ver 1.0 Beta</div>
     </div>
 </body>
 </html>
