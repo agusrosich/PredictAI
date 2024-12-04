@@ -256,6 +256,66 @@
         <img src="https://flagcdn.com/w20/es.png" alt="Español" onclick="switchLanguage('es')">
     </div>
 
+    <!-- Form Section -->
+    <div class="section form-container">
+        <h1 class="en">Smart Roach Test</h1>
+        <h1 class="es">Prueba Smart Roach</h1>
+        <h2 class="subtitle">Unidad Académica de Radioterapia - UDELAR - 2024</h2>
+        <form method="post">
+            <label for="edad">Edad:</label>
+            <input type="number" id="edad" name="edad" required value="{{ edad }}">
+
+            <label for="t">Estadio T:</label>
+            <select id="t" name="t" required>
+                <option value="T1a" {% if t == 'T1a' %}selected{% endif %}>T1a</option>
+                <option value="T1b" {% if t == 'T1b' %}selected{% endif %}>T1b</option>
+                <option value="T1c" {% if t == 'T1c' %}selected{% endif %}>T1c</option>
+                <option value="T2" {% if t == 'T2' %}selected{% endif %}>T2</option>
+                <option value="T2a" {% if t == 'T2a' %}selected{% endif %}>T2a</option>
+                <option value="T2b" {% if t == 'T2b' %}selected{% endif %}>T2b</option>
+                <option value="T2c" {% if t == 'T2c' %}selected{% endif %}>T2c</option>
+                <option value="T3" {% if t == 'T3' %}selected{% endif %}>T3</option>
+                <option value="T3a" {% if t == 'T3a' %}selected{% endif %}>T3a</option>
+                <option value="T3b" {% if t == 'T3b' %}selected{% endif %}>T3b</option>
+                <option value="T4" {% if t == 'T4' %}selected{% endif %}>T4</option>
+            </select>
+
+            <label for="race">Raza:</label>
+            <select id="race" name="race" required>
+                <option value="White" {% if race == 'White' %}selected{% endif %}>Blanco</option>
+                <option value="Black" {% if race == 'Black' %}selected{% endif %}>Negro</option>
+                <option value="Asian/Pacific Islander" {% if race == 'Asian/Pacific Islander' %}selected{% endif %}>Asiático/Isleño del Pacífico</option>
+                <option value="American Indian/AK Native" {% if race == 'American Indian/AK Native' %}selected{% endif %}>Indio Americano/Nativo de Alaska</option>
+                <option value="Other" {% if race == 'Other' %}selected{% endif %}>Otro</option>
+                <option value="Unknown" {% if race == 'Unknown' %}selected{% endif %}>Desconocido</option>
+            </select>
+
+            <label for="psa">PSA:</label>
+            <div class="psa-value">Valor PSA: <span id="psaValue">{{ psa or 0 }}</span> ng/mL</div>
+            <input type="range" id="psaSlider" min="0" max="100" step="0.1" value="{{ psa or 0 }}" oninput="updatePSAValue(this.value)">
+            <div class="psa-input">
+                <label for="psaNumber">Ingresar valor PSA:</label>
+                <input type="number" id="psaNumber" name="psa" min="0" max="100" step="0.1" value="{{ psa or 0 }}" oninput="updatePSASlider(this.value)">
+            </div>
+
+            <label for="gleason">Gleason:</label>
+            <select id="gleason" name="gleason" required>
+                {% for i in range(2, 11) %}
+                    <option value="{{ i }}" {% if gleason == i %}selected{% endif %}>{{ i }}</option>
+                {% endfor %}
+            </select>
+
+            <input type="submit" value="Predecir Riesgo">
+        </form>
+
+        {% if result is not none %}
+            <h2 class="result">Riesgo de Ganglios Positivos: {{ result }}%</h2>
+        {% endif %}
+
+        <!-- Version -->
+        <div class="version">Beta 1.0</div>
+    </div>
+
     <!-- Abstract Section -->
     <div class="section abstract-container">
         <h2 class="section-title">Abstract</h2>
@@ -317,73 +377,6 @@
         </p>
     </div>
 
-    <!-- GitHub Section -->
-    <div class="section github-container">
-        <h2 class="section-title">GitHub</h2>
-        <p class="en">Access the project on GitHub:</p>
-        <p class="es">Accede al proyecto en GitHub:</p>
-        <a href="https://github.com/agusrosich/SmartRoach/" target="_blank">https://github.com/agusrosich/SmartRoach/</a>
-    </div>
-
-    <!-- Form Section -->
-    <div class="section form-container">
-        <h1 class="es">Prueba Smart Roach</h1>
-        <h2 class="subtitle">Unidad Académica de Radioterapia - UDELAR - 2024</h2>
-        <form method="post">
-            <label for="edad">Edad:</label>
-            <input type="number" id="edad" name="edad" required value="{{ edad }}">
-
-            <label for="t">Estadio T:</label>
-            <select id="t" name="t" required>
-                <option value="T1a" {% if t == 'T1a' %}selected{% endif %}>T1a</option>
-                <option value="T1b" {% if t == 'T1b' %}selected{% endif %}>T1b</option>
-                <option value="T1c" {% if t == 'T1c' %}selected{% endif %}>T1c</option>
-                <option value="T2" {% if t == 'T2' %}selected{% endif %}>T2</option>
-                <option value="T2a" {% if t == 'T2a' %}selected{% endif %}>T2a</option>
-                <option value="T2b" {% if t == 'T2b' %}selected{% endif %}>T2b</option>
-                <option value="T2c" {% if t == 'T2c' %}selected{% endif %}>T2c</option>
-                <option value="T3" {% if t == 'T3' %}selected{% endif %}>T3</option>
-                <option value="T3a" {% if t == 'T3a' %}selected{% endif %}>T3a</option>
-                <option value="T3b" {% if t == 'T3b' %}selected{% endif %}>T3b</option>
-                <option value="T4" {% if t == 'T4' %}selected{% endif %}>T4</option>
-            </select>
-
-            <label for="race">Raza:</label>
-            <select id="race" name="race" required>
-                <option value="White" {% if race == 'White' %}selected{% endif %}>Blanco</option>
-                <option value="Black" {% if race == 'Black' %}selected{% endif %}>Negro</option>
-                <option value="Asian/Pacific Islander" {% if race == 'Asian/Pacific Islander' %}selected{% endif %}>Asiático/Isleño del Pacífico</option>
-                <option value="American Indian/AK Native" {% if race == 'American Indian/AK Native' %}selected{% endif %}>Indio Americano/Nativo de Alaska</option>
-                <option value="Other" {% if race == 'Other' %}selected{% endif %}>Otro</option>
-                <option value="Unknown" {% if race == 'Unknown' %}selected{% endif %}>Desconocido</option>
-            </select>
-
-            <label for="psa">PSA:</label>
-            <div class="psa-value">Valor PSA: <span id="psaValue">{{ psa or 0 }}</span> ng/mL</div>
-            <input type="range" id="psaSlider" min="0" max="100" step="0.1" value="{{ psa or 0 }}" oninput="updatePSAValue(this.value)">
-            <div class="psa-input">
-                <label for="psaNumber">Ingresar valor PSA:</label>
-                <input type="number" id="psaNumber" name="psa" min="0" max="100" step="0.1" value="{{ psa or 0 }}" oninput="updatePSASlider(this.value)">
-            </div>
-
-            <label for="gleason">Gleason:</label>
-            <select id="gleason" name="gleason" required>
-                {% for i in range(2, 11) %}
-                    <option value="{{ i }}" {% if gleason == i %}selected{% endif %}>{{ i }}</option>
-                {% endfor %}
-            </select>
-
-            <input type="submit" value="Predecir Riesgo">
-        </form>
-
-        {% if result is not none %}
-            <h2 class="result">Riesgo de Ganglios Positivos: {{ result }}%</h2>
-        {% endif %}
-
-        <!-- Version -->
-        <div class="version">Beta 1.0</div>
-    </div>
-
     <!-- Social Share Section -->
     <div class="section social-share">
         <p class="es">Compartir en:</p>
@@ -394,5 +387,14 @@
             <a href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/agusrosich/SmartRoach/" class="social-icon facebook" title="Facebook" target="_blank">f</a>
         </div>
     </div>
+
+    <!-- GitHub Section -->
+    <div class="section github-container">
+        <h2 class="section-title">GitHub</h2>
+        <p class="en">Access the project on GitHub:</p>
+        <p class="es">Accede al proyecto en GitHub:</p>
+        <a href="https://github.com/agusrosich/SmartRoach/" target="_blank">https://github.com/agusrosich/SmartRoach/</a>
+    </div>
 </body>
 </html>
+
