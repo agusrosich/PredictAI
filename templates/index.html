@@ -8,40 +8,47 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            display: flex;
-            justify-content: center; /* Centrar horizontalmente */
-            align-items: center;    /* Centrar verticalmente */
-            height: 100vh;          /* Altura de la ventana */
             margin: 0;
+            padding: 20px;
             background-color: #e0f7fa; /* Fondo celeste */
-            position: relative;    /* Para posicionar el texto de versión */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .form-container {
-            border: none; /* Sin borde */
-            border-radius: 15px;    /* Bordes redondeados */
-            padding: 30px;
+        .section {
+            width: 400px; /* Volver al ancho anterior */
             background-color: white;
-            width: 350px;            /* Ancho fijo */
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
-            position: relative;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            box-sizing: border-box;
         }
         h1 {
             color: #007bff; /* Color azul */
             text-align: center;
             margin-bottom: 10px;
+            font-size: 28px;
         }
         h2.subtitle {
-            font-size: 14px;
+            font-size: 16px;
             text-align: center;
             margin-top: 0;
             margin-bottom: 25px;
             color: #555;
+        }
+        h2.section-title {
+            font-size: 20px;
+            color: #007bff;
+            margin-bottom: 15px;
+            text-align: center;
         }
         label {
             display: block;
             margin-top: 15px;
             font-weight: 500;
             color: #333;
+            font-size: 16px;
         }
         input[type="number"],
         select {
@@ -51,7 +58,7 @@
             border-radius: 8px;
             border: 1px solid #ccc;
             margin-top: 8px;
-            font-size: 14px;
+            font-size: 16px;
             outline: none;
             transition: border-color 0.3s;
         }
@@ -65,9 +72,10 @@
         }
         .psa-value {
             text-align: center;
-            margin-bottom: 10px;
+            margin-top: 10px;
             font-weight: bold;
             color: #333;
+            font-size: 16px;
         }
         .psa-input {
             display: flex;
@@ -78,16 +86,17 @@
         .psa-input label {
             margin: 0;
             font-weight: normal;
-            font-size: 14px;
+            font-size: 16px;
         }
         .psa-input input[type="number"] {
-            width: 80px;
+            width: 100px;
             margin-left: 10px;
             padding: 8px;
             border-radius: 5px;
             border: 1px solid #ccc;
             outline: none;
             transition: border-color 0.3s;
+            font-size: 16px;
         }
         .psa-input input[type="number"]:focus {
             border-color: #007bff;
@@ -100,7 +109,7 @@
             color: white;
             border: none;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
             border-radius: 8px;
             transition: background-color 0.3s ease;
@@ -111,23 +120,101 @@
         h2.result {
             text-align: center;
             color: #28a745; /* Color verde */
+            font-size: 18px;
+            margin-top: 20px;
         }
         .version {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            font-size: 12px;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
             color: #888;
         }
         /* Estilos para dispositivos móviles */
         @media (max-width: 480px) {
-            .form-container {
+            .section {
                 width: 90%;
-                padding: 20px;
+                padding: 15px;
             }
             h1 {
                 font-size: 24px;
             }
+            label, .psa-value, .psa-input label, .social-share p {
+                font-size: 14px;
+            }
+            input[type="number"],
+            select,
+            .psa-input input[type="number"],
+            input[type="submit"] {
+                font-size: 14px;
+            }
+            h2.section-title {
+                font-size: 18px;
+            }
+        }
+        /* Language Switcher */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .language-switcher img {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            margin-left: 10px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+        /* Social Share */
+        .social-share {
+            width: 400px;
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .social-share p {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            text-decoration: none;
+        }
+        .social-icon.x {
+            background-color: #1DA1F2; /* Color azul de X */
+        }
+        .social-icon.linkedin {
+            background-color: #0077B5; /* Color azul de LinkedIn */
+        }
+        .social-icon.instagram {
+            background-color: #E4405F; /* Color rosa de Instagram */
+        }
+        .social-icon.facebook {
+            background-color: #3b5998; /* Color azul de Facebook */
+        }
+        .social-icon:hover {
+            opacity: 0.8;
         }
     </style>
     <script>
@@ -139,11 +226,108 @@
             document.getElementById('psaValue').innerText = val;
             document.getElementById('psaSlider').value = val;
         }
+        function switchLanguage(lang) {
+            if (lang === 'en') {
+                document.querySelectorAll('.en').forEach(function(el) {
+                    el.style.display = 'block';
+                });
+                document.querySelectorAll('.es').forEach(function(el) {
+                    el.style.display = 'none';
+                });
+            } else if (lang === 'es') {
+                document.querySelectorAll('.en').forEach(function(el) {
+                    el.style.display = 'none';
+                });
+                document.querySelectorAll('.es').forEach(function(el) {
+                    el.style.display = 'block';
+                });
+            }
+        }
+        // Set default language to English on page load
+        window.onload = function() {
+            switchLanguage('en');
+        };
     </script>
 </head>
 <body>
-    <div class="form-container">
-        <h1>Smart Roach Test</h1>
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <img src="https://flagcdn.com/w20/us.png" alt="English" onclick="switchLanguage('en')">
+        <img src="https://flagcdn.com/w20/es.png" alt="Español" onclick="switchLanguage('es')">
+    </div>
+
+    <!-- Abstract Section -->
+    <div class="section abstract-container">
+        <h2 class="section-title">Abstract</h2>
+
+        <!-- Title -->
+        <h3 class="en">Smart Roach: A Machine Learning-Based Approach to Improve Lymph Node Invasion Risk Prediction in Patients with Localized Prostate Cancer</h3>
+        <h3 class="es">Smart Roach: Un Enfoque Basado en Machine Learning para Mejorar la Predicción del Riesgo de Invasión Ganglionar en Pacientes con Cáncer de Próstata Localizado</h3>
+
+        <!-- Authors -->
+        <p>Rosich, A.; Cuervo, B.; Ricagni, L.; Juan, J.; Ferrer, J.; Cubas, P.; Bentacur, C.; Flores, R.; Lorenzo, F.</p>
+
+        <!-- Institution -->
+        <p class="en"><strong>Institution:</strong> Academic Unit of Radiotherapy of the Hospital de Clínicas Dr. Manuel Quintela, Faculty of Medicine, University of the Republic. Montevideo, Uruguay</p>
+        <p class="es"><strong>Institución:</strong> Unidad Académica de Radioterapia del Hospital de Clínicas Dr. Manuel Quintela, Facultad de Medicina, Universidad de la República. Montevideo, Uruguay</p>
+
+        <!-- Abstract -->
+        <!-- English Abstract -->
+        <p class="en">
+            <strong>Introduction</strong><br>
+            Prostate cancer is the most common malignancy in men worldwide, representing approximately 15% of all new cancer diagnoses in the U.S. annually. Accurate risk stratification for lymph node invasion (LNI) remains crucial for optimizing therapeutic decisions. While traditional tools like the Roach formula offer simplicity, their precision has been questioned in contemporary clinical settings. This study introduces "Smart Roach," a machine learning-based predictive model aiming to improve LNI risk assessment in localized prostate cancer.
+        </p>
+        <p class="en">
+            <strong>Methodology</strong><br>
+            A retrospective analysis utilized data from the SEER database (1975–2021). Male patients diagnosed with localized prostate cancer between 2018 and 2021 were included. Variables such as PSA, Gleason score, and TNM staging were analyzed. Smart Roach was trained using Gradient Boosting Machine (GBM) algorithms, evaluated against the traditional Roach formula, and validated through cross-validation techniques. Logistic regression identified significant predictors of LNI. Model performance metrics included accuracy, sensitivity, specificity, and area under the curve (AUC).
+        </p>
+        <p class="en">
+            <strong>Results</strong><br>
+            Of 55,299 eligible patients, 60% were used for training and 40% for validation. Smart Roach demonstrated superior performance across all risk groups. In the low-risk group, it achieved an accuracy of 0.83 and a specificity of 0.99, compared to 0.12 and 0.56 with the Roach formula. AUC values for Smart Roach ranged from 0.87 to 0.98, significantly outperforming the Roach formula’s maximum AUC of 0.76. Logistic regression identified Gleason score (OR 2.56, 95% CI: 2.46–2.66) and PSA (OR 1.037, 95% CI: 1.036–1.039) as key predictors.
+        </p>
+        <p class="en">
+            <strong>Discussion</strong><br>
+            Smart Roach improved the identification of patients without LNI risk, reducing false positives while maintaining high specificity. Its performance underscores the potential of machine learning in refining traditional prediction models. However, the exclusive use of SEER data highlights the need for external validation in diverse populations.
+        </p>
+        <p class="en">
+            <strong>Conclusion</strong><br>
+            The Smart Roach model, leveraging machine learning, enhances precision and specificity in LNI risk prediction. Validation using ePLND patient data is essential for determining its clinical applicability.
+        </p>
+
+        <!-- Spanish Abstract -->
+        <p class="es">
+            <strong>Introducción</strong><br>
+            El cáncer de próstata es la neoplasia maligna más común en hombres a nivel mundial, representando aproximadamente el 15% de todos los nuevos diagnósticos de cáncer en los EE. UU. anualmente. La estratificación precisa del riesgo de invasión de ganglios linfáticos (LNI) sigue siendo crucial para optimizar las decisiones terapéuticas. Si bien herramientas tradicionales como la fórmula de Roach ofrecen simplicidad, su precisión ha sido cuestionada en entornos clínicos contemporáneos. Este estudio introduce "Smart Roach", un modelo predictivo basado en aprendizaje automático que busca mejorar la evaluación del riesgo de LNI en cáncer de próstata localizado.
+        </p>
+        <p class="es">
+            <strong>Metodología</strong><br>
+            Se realizó un análisis retrospectivo utilizando datos de la base SEER (1975–2021). Se incluyeron pacientes masculinos diagnosticados con cáncer de próstata localizado entre 2018 y 2021. Se analizaron variables como PSA, puntaje de Gleason y estadificación TNM. Smart Roach fue entrenado utilizando algoritmos de Gradient Boosting Machine (GBM), evaluado contra la fórmula tradicional de Roach y validado mediante técnicas de validación cruzada. La regresión logística identificó predictores significativos de LNI. Las métricas de rendimiento del modelo incluyeron precisión, sensibilidad, especificidad y área bajo la curva (AUC).
+        </p>
+        <p class="es">
+            <strong>Resultados</strong><br>
+            De 55,299 pacientes elegibles, el 60% se utilizó para entrenamiento y el 40% para validación. Smart Roach demostró un rendimiento superior en todos los grupos de riesgo. En el grupo de bajo riesgo, logró una precisión de 0.83 y una especificidad de 0.99, en comparación con 0.12 y 0.56 con la fórmula de Roach. Los valores de AUC para Smart Roach oscilaron entre 0.87 y 0.98, superando significativamente el AUC máximo de 0.76 de la fórmula de Roach. La regresión logística identificó el puntaje de Gleason (OR 2.56, IC 95%: 2.46–2.66) y el PSA (OR 1.037, IC 95%: 1.036–1.039) como predictores clave.
+        </p>
+        <p class="es">
+            <strong>Discusión</strong><br>
+            Smart Roach mejoró la identificación de pacientes sin riesgo de LNI, reduciendo falsos positivos y manteniendo alta especificidad. Su rendimiento subraya el potencial del aprendizaje automático para refinar modelos de predicción tradicionales. Sin embargo, el uso exclusivo de datos SEER destaca la necesidad de validación externa en poblaciones diversas.
+        </p>
+        <p class="es">
+            <strong>Conclusión</strong><br>
+            El modelo Smart Roach, aprovechando el aprendizaje automático, mejora la precisión y especificidad en la predicción del riesgo de LNI. La validación utilizando datos de pacientes con ePLND es esencial para determinar su aplicabilidad clínica.
+        </p>
+    </div>
+
+    <!-- GitHub Section -->
+    <div class="section github-container">
+        <h2 class="section-title">GitHub</h2>
+        <p class="en">Access the project on GitHub:</p>
+        <p class="es">Accede al proyecto en GitHub:</p>
+        <a href="https://github.com/agusrosich/SmartRoach/" target="_blank">https://github.com/agusrosich/SmartRoach/</a>
+    </div>
+
+    <!-- Form Section -->
+    <div class="section form-container">
+        <h1 class="es">Prueba Smart Roach</h1>
         <h2 class="subtitle">Unidad Académica de Radioterapia - UDELAR - 2024</h2>
         <form method="post">
             <label for="edad">Edad:</label>
@@ -196,7 +380,19 @@
             <h2 class="result">Riesgo de Ganglios Positivos: {{ result }}%</h2>
         {% endif %}
 
-        <div class="version">Ver 1.0 Beta</div>
+        <!-- Version -->
+        <div class="version">Beta 1.0</div>
+    </div>
+
+    <!-- Social Share Section -->
+    <div class="section social-share">
+        <p class="es">Compartir en:</p>
+        <div class="social-icons">
+            <a href="https://twitter.com/intent/tweet?text=Check%20out%20Smart%20Roach%20Test!" class="social-icon x" title="X" target="_blank">X</a>
+            <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/agusrosich/SmartRoach/&title=Smart%20Roach%20Test" class="social-icon linkedin" title="LinkedIn" target="_blank">in</a>
+            <a href="https://www.instagram.com/?url=https://github.com/agusrosich/SmartRoach/" class="social-icon instagram" title="Instagram" target="_blank">IG</a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/agusrosich/SmartRoach/" class="social-icon facebook" title="Facebook" target="_blank">f</a>
+        </div>
     </div>
 </body>
 </html>
