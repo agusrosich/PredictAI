@@ -258,14 +258,21 @@
 
     <!-- Form Section -->
     <div class="section form-container">
+        <!-- Title -->
         <h1 class="en">PREDICT Test</h1>
         <h1 class="es">PREDICT Test</h1>
+
         <h2 class="subtitle">Unidad Académica de Radioterapia - UDELAR - 2024</h2>
+
         <form method="post">
-            <label for="edad">Edad:</label>
+            <!-- Age / Edad -->
+            <label for="edad" class="en">Age:</label>
+            <label for="edad" class="es">Edad:</label>
             <input type="number" id="edad" name="edad" required value="{{ edad }}">
 
-            <label for="t">Estadio T:</label>
+            <!-- T Stage / Estadio T -->
+            <label for="t" class="en">Stage T:</label>
+            <label for="t" class="es">Estadio T:</label>
             <select id="t" name="t" required>
                 <option value="T1a" {% if t == 'T1a' %}selected{% endif %}>T1a</option>
                 <option value="T1b" {% if t == 'T1b' %}selected{% endif %}>T1b</option>
@@ -280,7 +287,9 @@
                 <option value="T4" {% if t == 'T4' %}selected{% endif %}>T4</option>
             </select>
 
-            <label for="race">Raza:</label>
+            <!-- Race / Raza -->
+            <label for="race" class="en">Race:</label>
+            <label for="race" class="es">Raza:</label>
             <select id="race" name="race" required>
                 <option value="White" {% if race == 'White' %}selected{% endif %}>Blanco</option>
                 <option value="Black" {% if race == 'Black' %}selected{% endif %}>Negro</option>
@@ -290,22 +299,35 @@
                 <option value="Unknown" {% if race == 'Unknown' %}selected{% endif %}>Desconocido</option>
             </select>
 
-            <label for="psa">PSA:</label>
-            <div class="psa-value">Valor PSA: <span id="psaValue">{{ psa or 0 }}</span> ng/mL</div>
+            <!-- PSA -->
+            <label for="psa" class="en">PSA:</label>
+            <label for="psa" class="es">PSA:</label>
+            <div class="psa-value">
+                <!-- Language for "Valor PSA" / "PSA Value" -->
+                <span class="en">PSA Value:</span>
+                <span class="es">Valor PSA:</span>
+                <span id="psaValue">{{ psa or 0 }}</span> ng/mL
+            </div>
             <input type="range" id="psaSlider" min="0" max="100" step="0.1" value="{{ psa or 0 }}" oninput="updatePSAValue(this.value)">
+
             <div class="psa-input">
-                <label for="psaNumber">Ingresar valor PSA:</label>
+                <label for="psaNumber" class="en">Enter PSA value:</label>
+                <label for="psaNumber" class="es">Ingresar valor PSA:</label>
                 <input type="number" id="psaNumber" name="psa" min="0" max="100" step="0.1" value="{{ psa or 0 }}" oninput="updatePSASlider(this.value)">
             </div>
 
-            <label for="gleason">Gleason:</label>
+            <!-- Gleason -->
+            <label for="gleason" class="en">Gleason:</label>
+            <label for="gleason" class="es">Gleason:</label>
             <select id="gleason" name="gleason" required>
                 {% for i in range(2, 11) %}
                     <option value="{{ i }}" {% if gleason == i %}selected{% endif %}>{{ i }}</option>
                 {% endfor %}
             </select>
 
-            <input type="submit" value="Predecir Riesgo">
+            <!-- Submit Buttons -->
+            <input type="submit" class="en" value="Predict Risk">
+            <input type="submit" class="es" value="Predecir Riesgo">
         </form>
 
         {% if result is not none %}
@@ -331,47 +353,47 @@
         <p class="en"><strong>Institution:</strong> Academic Unit of Radiotherapy of the Hospital de Clínicas Dr. Manuel Quintela, Faculty of Medicine, University of the Republic. Montevideo, Uruguay</p>
         <p class="es"><strong>Institución:</strong> Unidad Académica de Radioterapia del Hospital de Clínicas Dr. Manuel Quintela, Facultad de Medicina, Universidad de la República. Montevideo, Uruguay</p>
 
-        <!-- Abstract -->
-        <!-- English Abstract -->
+        <!-- English Abstract (Updated) -->
         <p class="en">
             <strong>Purpose/Objective(s):</strong><br>
             The objective of this work is to develop and internally validate an open-source machine learning–based predictive model, termed "PREDICT" (Prostate Risk Evaluation and Decision-making Integrating Clinical Tools) to more accurately determine the risk of lymph node invasion (LNI) in patients with localized prostate cancer.
         </p>
         <p class="en">
             <strong>Materials/Methods:</strong><br>
-            A retrospective study was conducted using data from the "Incidence - SEER Research Data, 8 Registries, Nov 2023 Sub (1975-2021)" database. A total of 55,299 male patients diagnosed with prostate cancer between 2018 and 2021 were included, classified into six risk groups based on tumor size according to the AJCC 8th edition TNM classification and NCCN 4.2024 guidelines. The PREDICT model was developed using the Gradient Boosting Machine (GBM) algorithm and trained in five independent iterations for each risk group. The performance of PREDICT was compared to the Roach formula using metrics of accuracy, sensitivity, specificity, and area under the curve (AUC). Additionally, logistic regression analysis was performed to identify the main predictors of lymph node invasion.
+            A retrospective study was conducted using data from the "Incidence - SEER Research Data, 8 Registries, Nov 2023 Sub (1975-2021)" database. A total of 55,299 male patients diagnosed with prostate cancer between 2018 and 2021 were included and classified into six risk groups based on tumor size according to the AJCC 8th edition TNM classification and NCCN 4.2024 guidelines. The PREDICT model was developed using the Gradient Boosting Machine (GBM) algorithm and trained in five independent iterations for each risk group, with 60% of the patients used for model training and 40% for validation. The performance of PREDICT was compared to the Roach formula using metrics such as accuracy, sensitivity, specificity, and area under the curve (AUC). Additionally, logistic regression analysis was performed to identify the main predictors of lymph node invasion.
         </p>
         <p class="en">
             <strong>Results:</strong><br>
-            The PREDICT model significantly outperformed the Roach formula across all risk groups, reducing false positives in the low-risk group from 7,606 to 132. PREDICT achieved AUC values between 0.87 and 0.98, compared to 0.76 for Roach. The Gleason score (OR 2.56) and PSA level (OR 1.037) were identified as key predictors of LNI. PREDICT demonstrated a specificity above 0.94 and higher overall accuracy, improving the differentiation between patients with and without clinically relevant risk.
+            The PREDICT model significantly outperformed the Roach formula across all risk groups, reducing false positives in the low-risk group from 7,606 to 132. PREDICT achieved AUC values between 0.98 and 0.87, compared to 0.93 to 0.76 for Roach (from low risk to high risk). The Gleason score (OR 2.56 - CI 95%: 2.46–2.66) and PSA level (OR 1.037 - CI 95%: 1.036–1.039) were identified as key predictors of LNI. PREDICT demonstrated a specificity above 0.94 and higher overall accuracy, improving the differentiation between patients with and without clinically relevant risk.
         </p>
         <p class="en">
             <strong>Conclusion:</strong><br>
-            The machine learning–based PREDICT model offers greater precision and specificity in predicting the risk of lymph node invasion in patients with localized prostate cancer compared to the Roach formula. These improvements can refine therapeutic decisions regarding nodal irradiation. However, it is essential to validate the model in cohorts of patients undergoing extended pelvic lymph node dissection (ePLND) to confirm its clinical applicability.
+            The machine learning–based PREDICT model demonstrated greater precision and specificity in predicting the risk of lymph node invasion in patients with localized prostate cancer compared to the Roach formula. These could improve therapeutic decisions regarding nodal irradiation. However, it is essential to validate the model in cohorts of patients undergoing extended pelvic lymph node dissection (ePLND) to evaluate its clinical applicability.
         </p>
 
-        <!-- Spanish Abstract -->
+        <!-- Spanish Abstract (Updated) -->
         <p class="es">
             <strong>Propósito/Objetivo(s):</strong><br>
-            El objetivo de este trabajo es desarrollar y validar internamente un modelo predictivo de código abierto basado en aprendizaje automático, denominado "PREDICT" (Evaluación de Riesgo de Próstata y Toma de Decisiones Integrando Herramientas Clínicas), para determinar con mayor precisión el riesgo de invasión de ganglios linfáticos (LNI) en pacientes con cáncer de próstata localizado.
+            El objetivo de este trabajo es desarrollar y validar internamente un modelo predictivo de código abierto basado en aprendizaje automático, denominado "PREDICT" (Evaluación de Riesgo de Próstata y Toma de Decisiones Integrando Herramientas Clínicas) para determinar de manera más precisa el riesgo de invasión de ganglios linfáticos (LNI) en pacientes con cáncer de próstata localizado.
         </p>
         <p class="es">
             <strong>Materiales/Métodos:</strong><br>
-            Se realizó un estudio retrospectivo utilizando datos de la base "Incidence - SEER Research Data, 8 Registries, Nov 2023 Sub (1975-2021)". Se incluyeron un total de 55,299 pacientes masculinos diagnosticados con cáncer de próstata entre 2018 y 2021, clasificados en seis grupos de riesgo basados en el tamaño del tumor según la clasificación TNM de la 8ª edición del AJCC y las directrices NCCN 4.2024. El modelo PREDICT fue desarrollado utilizando el algoritmo Gradient Boosting Machine (GBM) y entrenado en cinco iteraciones independientes para cada grupo de riesgo. El rendimiento de PREDICT fue comparado con la fórmula de Roach utilizando métricas de precisión, sensibilidad, especificidad y área bajo la curva (AUC). Además, se realizó un análisis de regresión logística para identificar los principales predictores de invasión de ganglios linfáticos.
+            Se realizó un estudio retrospectivo utilizando datos de la base “Incidence - SEER Research Data, 8 Registries, Nov 2023 Sub (1975-2021)”. Se incluyeron un total de 55,299 pacientes masculinos diagnosticados con cáncer de próstata entre 2018 y 2021, clasificados en seis grupos de riesgo basados en el tamaño del tumor según la clasificación TNM de la 8ª edición del AJCC y las guías NCCN 4.2024. El modelo PREDICT se desarrolló utilizando el algoritmo Gradient Boosting Machine (GBM) y se entrenó en cinco iteraciones independientes para cada grupo de riesgo, utilizando el 60% de los pacientes para el entrenamiento del modelo y el 40% para la validación. El rendimiento de PREDICT se comparó con la fórmula de Roach utilizando métricas como exactitud, sensibilidad, especificidad y área bajo la curva (AUC). Además, se realizó un análisis de regresión logística para identificar los principales predictores de invasión de ganglios linfáticos.
         </p>
         <p class="es">
             <strong>Resultados:</strong><br>
-            El modelo PREDICT superó significativamente a la fórmula de Roach en todos los grupos de riesgo, reduciendo los falsos positivos en el grupo de bajo riesgo de 7,606 a 132. PREDICT alcanzó valores de AUC entre 0.87 y 0.98, en comparación con 0.76 para Roach. El puntaje de Gleason (OR 2.56) y el nivel de PSA (OR 1.037) fueron identificados como predictores clave de LNI. PREDICT demostró una especificidad superior a 0.94 y una mayor precisión general, mejorando la diferenciación entre pacientes con y sin riesgo clínicamente relevante.
+            El modelo PREDICT superó significativamente a la fórmula de Roach en todos los grupos de riesgo, reduciendo los falsos positivos en el grupo de bajo riesgo de 7,606 a 132. PREDICT alcanzó valores de AUC entre 0.98 y 0.87, en comparación con 0.93 a 0.76 para Roach (desde bajo riesgo hasta alto riesgo). La puntuación de Gleason (OR 2.56 - IC 95%: 2.46–2.66) y el nivel de PSA (OR 1.037 - IC 95%: 1.036–1.039) fueron identificados como predictores clave de LNI. PREDICT demostró una especificidad superior a 0.94 y una mayor exactitud global, mejorando la diferenciación entre pacientes con y sin riesgo clínicamente relevante.
         </p>
         <p class="es">
             <strong>Conclusión:</strong><br>
-            El modelo PREDICT, basado en aprendizaje automático, ofrece mayor precisión y especificidad en la predicción del riesgo de invasión de ganglios linfáticos en pacientes con cáncer de próstata localizado en comparación con la fórmula de Roach. Estas mejoras pueden refinar las decisiones terapéuticas respecto a la irradiación nodal. Sin embargo, es esencial validar el modelo en cohortes de pacientes sometidos a disección de ganglios linfáticos pélvicos extendida (ePLND) para confirmar su aplicabilidad clínica.
+            El modelo PREDICT, basado en aprendizaje automático, mostró una mayor precisión y especificidad en la predicción del riesgo de invasión de ganglios linfáticos en pacientes con cáncer de próstata localizado en comparación con la fórmula de Roach. Esto podría mejorar las decisiones terapéuticas relacionadas con la irradiación nodal. Sin embargo, es esencial validar el modelo en cohortes de pacientes sometidos a disección extendida de ganglios linfáticos pélvicos (ePLND) para evaluar su aplicabilidad clínica.
         </p>
     </div>
 
     <!-- Social Share Section -->
     <div class="section social-share">
         <p class="es">Compartir en:</p>
+        <p class="en" style="display:none;">Share on:</p>
         <div class="social-icons">
             <a href="https://twitter.com/intent/tweet?text=Check%20out%20PredictIA%20Test!" class="social-icon x" title="X" target="_blank">X</a>
             <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/agusrosich/PredictIA/&title=PREDICT%20Test" class="social-icon linkedin" title="LinkedIn" target="_blank">in</a>
@@ -385,7 +407,8 @@
         <h2 class="section-title">GitHub</h2>
         <p class="en">Access the project on GitHub:</p>
         <p class="es">Accede al proyecto en GitHub:</p>
-        <a href="https://github.com/agusrosich/PredictAI/" target="_blank">https://github.com/agusrosich/PredictIA/</a>
+        <a href="https://github.com/agusrosich/PredictAI/" target="_blank">https://github.com/agusrosich/PredictAI/</a>
     </div>
 </body>
 </html>
+
