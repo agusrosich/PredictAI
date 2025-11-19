@@ -1,15 +1,12 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 import joblib
-import numpy as np
 import pandas as pd
 import json
 import os
-
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Cargar el modelo entrenado
 model = joblib.load('modelo_smart_roach.pkl')
@@ -102,5 +99,43 @@ def index():
     # Solicitud GET: Inicializar valores predeterminados para evitar errores de "UndefinedError"
     return render_template('index.html', result=None, edad='', t='T1a', race='Unknown', psa='', gleason=6)
 
+@app.route('/api/predict', methods=['POST'])
+def api_predict():
+    payload = request.get_json(silent=True)
+    if payload is None:
+        return jsonify({"error": "Se requiere un cuerpo JSON con los datos de entrada."}), 400
+    
+    expected_fields = ['edad', 't', 'race', 'psa', 'gleason']
+    missing_fields = [field for field in expected_fields if field not in (payload or {})]
+    if missing_fields:
+        return jsonify({"error": f"Hacen falta los siguientes campos: {', '.join(missing_fields)}."}), 400
+    
+    try:
+        edad = int(payload['edad'])
+        t = str(payload['t'])
+        race = str(payload['race'])
+        psa = float(payload['psa'])
+        gleason = int(payload['gleason'])
+    except (TypeError, ValueError):
+        return jsonify({"error": "Los campos 'edad', 'psa' y 'gleason' deben ser numéricos válidos."}), 400
+    
+    input_data = prepare_input_data(edad, t, race, psa, gleason)
+    prediction = float(model.predict_proba(input_data)[0][1])
+    risk_percentage = round(prediction * 100, 2)
+    
+    return jsonify({
+        "success": True,
+        "probability": prediction,
+        "risk_percentage": risk_percentage,
+        "inputs": {
+            "edad": edad,
+            "t": t,
+            "race": race,
+            "psa": psa,
+            "gleason": gleason
+        }
+    })
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
